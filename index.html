@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ZenFlow — Student Stress Relief</title>
+  <meta name="description" content="ZenFlow helps students manage stress with grounding techniques, breathing exercises, mood tracking, and calming activities." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="32" fill="url(#logoGrad)"/>
+          <path d="M32 16 C24 24 16 28 20 36 C24 44 32 48 32 48 C32 48 40 44 44 36 C48 28 40 24 32 16Z" fill="white" opacity="0.9"/>
+          <circle cx="32" cy="34" r="6" fill="url(#logoGrad2)" opacity="0.8"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="64" y2="64">
+              <stop offset="0%" stop-color="#7c6af7"/>
+              <stop offset="100%" stop-color="#4ecdc4"/>
+            </linearGradient>
+            <linearGradient id="logoGrad2" x1="0" y1="0" x2="64" y2="64">
+              <stop offset="0%" stop-color="#7c6af7"/>
+              <stop offset="100%" stop-color="#4ecdc4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1 class="splash-title">ZenFlow</h1>
+      <p class="splash-sub">Your student calm companion</p>
+      <div class="splash-loader">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Shell -->
+  <div id="app" class="app hidden">
+
+    <!-- Top Nav -->
+    <header class="topnav">
+      <div class="topnav-brand">
+        <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="32" fill="url(#navGrad)"/>
+          <path d="M32 16 C24 24 16 28 20 36 C24 44 32 48 32 48 C32 48 40 44 44 36 C48 28 40 24 32 16Z" fill="white" opacity="0.9"/>
+          <defs>
+            <linearGradient id="navGrad" x1="0" y1="0" x2="64" y2="64">
+              <stop offset="0%" stop-color="#7c6af7"/>
+              <stop offset="100%" stop-color="#4ecdc4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>ZenFlow</span>
+      </div>
+      <div class="topnav-actions">
+        <button class="streak-badge" id="streakBadge" title="Your streak"><i class="ph-fill ph-fire"></i> <span id="streakCount">0</span></button>
+        <button class="icon-btn" id="soundToggle" title="Toggle sounds"><i class="ph ph-speaker-high"></i></button>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="ph ph-moon"></i></button>
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <main class="main-content">
+
+      <!-- ========== HOME PAGE ========== -->
+      <section class="page active" id="page-home">
+        <div class="home-hero">
+          <div class="greeting-block">
+            <p class="greeting-label">Good <span id="timeOfDay">morning</span>,</p>
+            <h2 class="greeting-name"><span id="userName">Student</span> <i class="ph-fill ph-hand-waving"></i></h2>
+          </div>
+          <div class="quote-card glass-card">
+            <i class="ph-fill ph-sparkle quote-icon"></i>
+            <p id="dailyQuote" class="quote-text">"You are capable of amazing things."</p>
+          </div>
+        </div>
+
+        <!-- Mood Check-in -->
+        <div class="section-block">
+          <div class="section-header-flex">
+            <h3 class="section-title">How are you feeling?</h3>
+          </div>
+          <div class="mood-row" id="homeMoodRow">
+            <button class="mood-pill" data-mood="5" data-label="Great"><i class="ph-fill ph-smiley-wink"></i> Great</button>
+            <button class="mood-pill" data-mood="4" data-label="Good"><i class="ph-fill ph-smiley"></i> Good</button>
+            <button class="mood-pill" data-mood="3" data-label="Okay"><i class="ph-fill ph-smiley-meh"></i> Okay</button>
+            <button class="mood-pill" data-mood="2" data-label="Low"><i class="ph-fill ph-smiley-sad"></i> Low</button>
+            <button class="mood-pill" data-mood="1" data-label="Stressed"><i class="ph-fill ph-confounded"></i> Stressed</button>
+          </div>
+        </div>
+
+        <!-- Emergency Calm Button -->
+        <div class="section-block">
+          <button class="emergency-btn" id="emergencyBtn">
+            <i class="ph-fill ph-lifebuoy emergency-icon"></i>
+            <div class="emergency-text">
+              <strong>Emergency Calm</strong>
+              <small>Instant relief techniques</small>
+            </div>
+            <i class="ph-bold ph-caret-right" style="margin-left: auto; font-size: 1.5rem; opacity: 0.8"></i>
+          </button>
+        </div>
+
+        <!-- Quick Activities -->
+        <div class="section-block">
+          <h3 class="section-title">Quick Activities</h3>
+          <div class="quick-grid">
+            <button class="quick-card" onclick="navigateTo('breathing')" id="qBreathing">
+              <div class="quick-icon-wrap bg-primary-light"><i class="ph-fill ph-wind quick-icon text-primary"></i></div>
+              <span class="quick-label">Breathing</span>
+            </button>
+            <button class="quick-card" onclick="navigateTo('grounding')" id="qGrounding">
+              <div class="quick-icon-wrap bg-success-light"><i class="ph-fill ph-leaf quick-icon text-success"></i></div>
+              <span class="quick-label">Grounding</span>
+            </button>
+            <button class="quick-card" onclick="navigateTo('journal')" id="qJournal">
+              <div class="quick-icon-wrap bg-warning-light"><i class="ph-fill ph-notebook quick-icon text-warning"></i></div>
+              <span class="quick-label">Journal</span>
+            </button>
+            <button class="quick-card" onclick="navigateTo('tips')" id="qTips">
+              <div class="quick-icon-wrap bg-accent-light"><i class="ph-fill ph-lightbulb quick-icon text-accent"></i></div>
+              <span class="quick-label">Tips</span>
+            </button>
+            <button class="quick-card" onclick="navigateTo('focus')" id="qFocus">
+              <div class="quick-icon-wrap bg-secondary-light"><i class="ph-fill ph-target quick-icon text-secondary"></i></div>
+              <span class="quick-label">Focus</span>
+            </button>
+            <button class="quick-card" onclick="navigateTo('music')" id="qMusic">
+              <div class="quick-icon-wrap bg-primary-light"><i class="ph-fill ph-headphones quick-icon text-primary"></i></div>
+              <span class="quick-label">Sounds</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Daily Self-Care -->
+        <div class="section-block">
+          <h3 class="section-title">Today's Self-Care</h3>
+          <div class="selfcare-list" id="selfcareList"></div>
+        </div>
+      </section>
+
+      <!-- ========== BREATHING PAGE ========== -->
+      <section class="page" id="page-breathing">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-wind"></i></div>
+          <h2 class="page-title">Breathing</h2>
+          <p class="page-sub">Choose a technique to anchor yourself</p>
+        </div>
+
+        <div class="technique-tabs" id="breathTabs">
+          <button class="tab-btn active" data-tech="478" id="tab478">4-7-8</button>
+          <button class="tab-btn" data-tech="box" id="tabBox">Box</button>
+          <button class="tab-btn" data-tech="calm" id="tabCalm">Calm</button>
+          <button class="tab-btn" data-tech="energize" id="tabEnergize">Energize</button>
+        </div>
+
+        <div class="breath-info-card glass-card" id="breathInfo">
+          <h3 id="breathTechName">4-7-8 Breathing</h3>
+          <p id="breathTechDesc">Inhale 4s · Hold 7s · Exhale 8s. Perfect for anxiety and sleep.</p>
+        </div>
+
+        <div class="breath-visual-wrap">
+          <div class="breath-circle-outer" id="breathOuter">
+            <div class="breath-circle" id="breathCircle">
+              <div class="breath-label" id="breathLabel">Ready</div>
+              <div class="breath-count" id="breathCount"></div>
+            </div>
+          </div>
+          <div class="breath-progress-ring">
+            <svg width="240" height="240" viewBox="0 0 240 240" class="ring-svg">
+              <circle cx="120" cy="120" r="108" class="ring-bg"/>
+              <circle cx="120" cy="120" r="108" class="ring-fill" id="ringFill"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="breath-cycles">
+          <span>Cycles: <strong id="cycleCount">0</strong></span>
+        </div>
+
+        <div class="breath-controls">
+          <button class="btn-secondary" id="breathReset"><i class="ph ph-arrow-counter-clockwise"></i> Reset</button>
+          <button class="btn-primary" id="breathStart"><i class="ph-fill ph-play"></i> Start</button>
+        </div>
+      </section>
+
+      <!-- ========== GROUNDING PAGE ========== -->
+      <section class="page" id="page-grounding">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-leaf"></i></div>
+          <h2 class="page-title">Grounding</h2>
+          <p class="page-sub">The 5-4-3-2-1 present moment practice</p>
+        </div>
+
+        <div class="ground-progress-row">
+          <div class="ground-step-dot active" data-step="1">5</div>
+          <div class="ground-step-dot" data-step="2">4</div>
+          <div class="ground-step-dot" data-step="3">3</div>
+          <div class="ground-step-dot" data-step="4">2</div>
+          <div class="ground-step-dot" data-step="5">1</div>
+        </div>
+
+        <div class="ground-card glass-card" id="groundCard">
+          <div class="ground-sense-icon" id="groundIcon"><i class="ph-fill ph-eye"></i></div>
+          <h3 class="ground-sense-title" id="groundTitle">5 Things You Can SEE</h3>
+          <p class="ground-sense-desc" id="groundDesc">Look around carefully. Name 5 things you can see — a color, a shape, an object.</p>
+          <div class="ground-inputs" id="groundInputs"></div>
+        </div>
+
+        <div class="ground-controls">
+          <button class="btn-secondary" id="groundPrev" disabled><i class="ph ph-arrow-left"></i> Back</button>
+          <button class="btn-primary" id="groundNext">Next <i class="ph ph-arrow-right"></i></button>
+        </div>
+
+        <div class="ground-complete hidden" id="groundComplete">
+          <div class="complete-icon"><i class="ph-fill ph-confetti"></i></div>
+          <h3>Well done!</h3>
+          <p>You've completed the 5-4-3-2-1 grounding exercise. You are present.</p>
+          <button class="btn-primary" id="groundRestart"><i class="ph ph-arrow-counter-clockwise"></i> Start Again</button>
+        </div>
+      </section>
+
+      <!-- ========== MOOD TRACKER PAGE ========== -->
+      <section class="page" id="page-mood">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-chart-bar"></i></div>
+          <h2 class="page-title">Mood Tracker</h2>
+          <p class="page-sub">Understand your emotional rhythm</p>
+        </div>
+
+        <div class="mood-log-card glass-card">
+          <h3>Log Today's Mood</h3>
+          <div class="mood-selector" id="moodSelector">
+            <button class="mood-btn" data-val="5" title="Great"><i class="ph-fill ph-smiley-wink"></i><span>Great</span></button>
+            <button class="mood-btn" data-val="4" title="Good"><i class="ph-fill ph-smiley"></i><span>Good</span></button>
+            <button class="mood-btn" data-val="3" title="Okay"><i class="ph-fill ph-smiley-meh"></i><span>Okay</span></button>
+            <button class="mood-btn" data-val="2" title="Low"><i class="ph-fill ph-smiley-sad"></i><span>Low</span></button>
+            <button class="mood-btn" data-val="1" title="Stressed"><i class="ph-fill ph-confounded"></i><span>Bad</span></button>
+          </div>
+          <textarea class="mood-note" id="moodNote" placeholder="Optional note — what's on your mind?" rows="3"></textarea>
+          <button class="btn-primary full-width" id="logMoodBtn"><i class="ph ph-plus"></i> Save Mood</button>
+        </div>
+
+        <div class="mood-chart-block">
+          <h3 class="section-title">7-Day Overview</h3>
+          <div class="mood-bars" id="moodBars"></div>
+          <div class="mood-average glass-card" id="moodAverage">
+            <span class="avg-label">Weekly Average</span>
+            <span class="avg-val" id="avgValue">—</span>
+          </div>
+        </div>
+
+        <div class="mood-history" id="moodHistory"></div>
+      </section>
+
+      <!-- ========== JOURNAL PAGE ========== -->
+      <section class="page" id="page-journal">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-notebook"></i></div>
+          <h2 class="page-title">Journal</h2>
+          <p class="page-sub">Write freely — a safe space just for you</p>
+        </div>
+        <div class="journal-prompts-row" id="journalPrompts"></div>
+        <div class="glass-card journal-editor-wrap">
+          <div class="journal-meta">
+            <span id="journalDate" class="journal-date"></span>
+            <span class="journal-word-count" id="wordCount">0 words</span>
+          </div>
+          <textarea id="journalEditor" class="journal-textarea" placeholder="Start writing... release your thoughts onto the page."></textarea>
+          <div class="journal-actions">
+            <button class="btn-secondary" id="clearJournal"><i class="ph ph-trash"></i></button>
+            <button class="btn-primary" id="saveJournal"><i class="ph ph-floppy-disk"></i> Save Entry</button>
+          </div>
+        </div>
+        <div class="saved-entries" id="savedEntries">
+          <h3 class="section-title">Past Entries</h3>
+          <div id="entriesList"></div>
+        </div>
+      </section>
+
+      <!-- ========== TIPS PAGE ========== -->
+      <section class="page" id="page-tips">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-lightbulb"></i></div>
+          <h2 class="page-title">Tips & Self-Care</h2>
+          <p class="page-sub">Small practices for a healthier mindset</p>
+        </div>
+
+        <div class="daily-challenge-card glass-card">
+          <h3><i class="ph-fill ph-star text-warning"></i> Today's Challenge</h3>
+          <p id="dailyChallenge"></p>
+          <button class="btn-primary" id="completeChallengeBtn"><i class="ph-bold ph-check"></i> Mark Complete</button>
+        </div>
+
+        <div class="tips-filter-row" id="tipsFilter">
+          <button class="filter-chip active" data-cat="all">All</button>
+          <button class="filter-chip" data-cat="study">Study</button>
+          <button class="filter-chip" data-cat="sleep">Sleep</button>
+          <button class="filter-chip" data-cat="body">Body</button>
+          <button class="filter-chip" data-cat="mind">Mind</button>
+          <button class="filter-chip" data-cat="social">Social</button>
+        </div>
+
+        <div class="tips-grid" id="tipsGrid"></div>
+      </section>
+
+      <!-- ========== FOCUS PAGE ========== -->
+      <section class="page" id="page-focus">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-target"></i></div>
+          <h2 class="page-title">Focus Timer</h2>
+          <p class="page-sub">Structure your study & break times</p>
+        </div>
+
+        <div class="timer-mode-tabs">
+          <button class="tab-btn active" id="pomodoroTab" onclick="setTimerMode('pomodoro')">Focus</button>
+          <button class="tab-btn" id="shortBreakTab" onclick="setTimerMode('short')">Short Break</button>
+          <button class="tab-btn" id="longBreakTab" onclick="setTimerMode('long')">Long Break</button>
+        </div>
+
+        <div class="timer-display glass-card">
+          <div class="timer-ring-wrap">
+            <svg width="220" height="220" viewBox="0 0 220 220">
+              <circle cx="110" cy="110" r="96" class="ring-bg"/>
+              <circle cx="110" cy="110" r="96" class="ring-fill timer-ring" id="timerRing"/>
+            </svg>
+            <div class="timer-center">
+              <div class="timer-time" id="timerDisplay">25:00</div>
+              <div class="timer-mode-label" id="timerModeLabel">Focus</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timer-session-count">
+          Focus Sessions: <strong id="sessionsDone">0</strong>
+        </div>
+
+        <div class="timer-controls">
+          <button class="icon-btn-large bg-surface" id="timerReset"><i class="ph ph-arrow-counter-clockwise"></i></button>
+          <button class="btn-primary large" id="timerStart"><i class="ph-fill ph-play" id="timerStartIcon"></i> <span id="timerStartText">Start</span></button>
+          <button class="icon-btn-large bg-surface" id="timerSkip"><i class="ph ph-fast-forward"></i></button>
+        </div>
+
+        <div class="focus-tasks glass-card">
+          <div class="section-header-flex">
+            <h3><i class="ph-fill ph-list-checks"></i> Session Tasks</h3>
+          </div>
+          <div class="task-input-row">
+            <input type="text" id="taskInput" placeholder="What requires your focus?" class="task-input" />
+            <button class="btn-primary" id="addTaskBtn" style="padding:0 1rem;"><i class="ph-bold ph-plus"></i></button>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+        </div>
+      </section>
+
+      <!-- ========== SOUNDS PAGE ========== -->
+      <section class="page" id="page-music">
+        <div class="page-header">
+          <div class="header-icon"><i class="ph-fill ph-headphones"></i></div>
+          <h2 class="page-title">Calming Sounds</h2>
+          <p class="page-sub">Mix ambient noise to help you relax</p>
+        </div>
+        
+        <div class="sounds-grid" id="soundsGrid">
+          <!-- Populated by JS -->
+        </div>
+        
+        <div class="volume-control glass-card">
+          <i class="ph-fill ph-speaker-low"></i>
+          <input type="range" id="masterVolume" min="0" max="100" value="60" class="vol-slider" />
+          <i class="ph-fill ph-speaker-high"></i>
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+          <button class="btn-secondary" id="stopAllSoundsBtn"><i class="ph-fill ph-stop-circle"></i> Stop All Sounds</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottomnav">
+      <button class="nav-btn active" data-page="home" id="navHome">
+        <i class="ph-fill ph-house nav-icon"></i>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-btn" data-page="breathing" id="navBreathing">
+        <i class="ph-fill ph-wind nav-icon"></i>
+        <span class="nav-label">Breathe</span>
+      </button>
+      <button class="nav-btn" data-page="grounding" id="navGrounding">
+        <i class="ph-fill ph-leaf nav-icon"></i>
+        <span class="nav-label">Ground</span>
+      </button>
+      <button class="nav-btn" data-page="mood" id="navMood">
+        <i class="ph-fill ph-chart-bar nav-icon"></i>
+        <span class="nav-label">Mood</span>
+      </button>
+      <button class="nav-btn" data-page="more" id="navMore">
+        <i class="ph-fill ph-squares-four nav-icon"></i>
+        <span class="nav-label">More</span>
+      </button>
+    </nav>
+
+    <!-- More Menu Drawer -->
+    <div class="more-drawer hidden" id="moreDrawer">
+      <div class="drawer-backdrop" id="drawerBackdrop"></div>
+      <div class="drawer-panel">
+        <div class="drawer-handle"></div>
+        <h3 class="drawer-title">Explore ZenFlow</h3>
+        <div class="drawer-items">
+          <button class="drawer-item" onclick="navigateTo('journal')">
+            <div class="drawer-item-icon bg-warning-light"><i class="ph-fill ph-notebook text-warning"></i></div>
+            <span>Journal</span>
+            <i class="ph ph-caret-right ml-auto op-50"></i>
+          </button>
+          <button class="drawer-item" onclick="navigateTo('tips')">
+            <div class="drawer-item-icon bg-accent-light"><i class="ph-fill ph-lightbulb text-accent"></i></div>
+            <span>Tips & Self-Care</span>
+            <i class="ph ph-caret-right ml-auto op-50"></i>
+          </button>
+          <button class="drawer-item" onclick="navigateTo('focus')">
+            <div class="drawer-item-icon bg-secondary-light"><i class="ph-fill ph-target text-secondary"></i></div>
+            <span>Focus Timer</span>
+            <i class="ph ph-caret-right ml-auto op-50"></i>
+          </button>
+          <button class="drawer-item" onclick="navigateTo('music')">
+            <div class="drawer-item-icon bg-primary-light"><i class="ph-fill ph-headphones text-primary"></i></div>
+            <span>Calming Sounds</span>
+            <i class="ph ph-caret-right ml-auto op-50"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Emergency Calm Modal -->
+  <div class="modal-overlay hidden" id="emergencyModal">
+    <div class="modal-panel emergency-panel">
+      <div class="modal-header">
+        <h2 style="display:flex;align-items:center;gap:0.5rem;"><i class="ph-fill ph-lifebuoy"></i> Emergency Calm</h2>
+        <button class="modal-close" id="closeEmergency"><i class="ph ph-x"></i></button>
+      </div>
+      <p class="modal-sub">You're safe. Take it one step at a time.</p>
+
+      <div class="emergency-steps" id="emergencySteps">
+        <div class="estep active" id="estep1">
+          <div class="estep-num">Step 1</div>
+          <div class="estep-icon"><i class="ph-fill ph-hand-palm text-accent"></i></div>
+          <h3>Stop & Acknowledge</h3>
+          <p>Say to yourself: <em>"I am feeling overwhelmed and that is okay."</em> Simply naming the feeling reduces its intensity.</p>
+          <button class="btn-primary" onclick="nextEmergencyStep(2)">I acknowledge it <i class="ph-bold ph-arrow-right"></i></button>
+        </div>
+        <div class="estep hidden" id="estep2">
+          <div class="estep-num">Step 2</div>
+          <div class="estep-icon"><i class="ph-fill ph-wind"></i></div>
+          <h3>Take 3 Deep Breaths</h3>
+          <p>Breathe in slowly through your nose… hold… breathe out through your mouth. Repeat 3 times.</p>
+          <div class="estep-breath-guide" id="estepBreath">
+            <div class="estep-breath-circle" id="estepBreathCircle">Breathe in</div>
+          </div>
+          <button class="btn-primary" id="estepNext2" onclick="nextEmergencyStep(3)"><i class="ph-bold ph-check"></i> Done</button>
+        </div>
+        <div class="estep hidden" id="estep3">
+          <div class="estep-num">Step 3</div>
+          <div class="estep-icon"><i class="ph-fill ph-eye"></i></div>
+          <h3>Look Around</h3>
+          <p>Name <strong>5 things</strong> you can see right now. This brings you back to the present moment.</p>
+          <div class="quick-ground-inputs" id="quickGroundInputs"></div>
+          <button class="btn-primary" onclick="nextEmergencyStep(4)">Done <i class="ph-bold ph-arrow-right"></i></button>
+        </div>
+        <div class="estep hidden" id="estep4">
+          <div class="estep-num">Step 4</div>
+          <div class="estep-icon"><i class="ph-fill ph-fingerprint"></i></div>
+          <h3>Grounding Touch</h3>
+          <p>Press your feet flat on the floor. Feel the chair beneath you. Press and hold your thumb below for 5 seconds.</p>
+          <div class="pressure-btn-wrap">
+            <button class="pressure-btn" id="pressBtn">Hold Me</button>
+            <div class="pressure-progress" id="pressProgress"></div>
+          </div>
+          <button class="btn-primary hidden" id="pressDone" onclick="nextEmergencyStep(5)"><i class="ph-bold ph-check"></i> Done</button>
+        </div>
+        <div class="estep hidden" id="estep5">
+          <div class="estep-icon"><i class="ph-fill ph-star text-warning"></i></div>
+          <h3>You made it!</h3>
+          <p>You've just used real skills to manage a stressful moment. You're stronger than you think. You've got this.</p>
+          <div class="affirmation-box" id="affirmationBox"></div>
+          <button class="btn-primary" id="closeEmergencyFinal">Close & Return</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast hidden" id="toast">
+    <i class="ph-fill ph-info"></i> <span id="toastMsg"></span>
+  </div>
+
+  <audio id="soundPlayer1" loop></audio>
+  <audio id="soundPlayer2" loop></audio>
+
+  <script src="app.js"></script>
+</body>
+</html>
