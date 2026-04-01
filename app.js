@@ -33,10 +33,10 @@ const TIPS = [
 const DAILY_CHALLENGE = "Take a 10-minute walk without looking at your phone.";
 
 const SOUNDS = [
-  { id: 's1', label: 'Rain', icon: 'ph-cloud-rain', src: 'https://cdn.pixabay.com/audio/2021/08/04/audio_3d1da9b207.mp3' }, // Rain 
-  { id: 's2', label: 'Forest', icon: 'ph-tree', src: 'https://cdn.pixabay.com/audio/2022/10/30/audio_51a3ddccce.mp3' }, // Forest Birds
-  { id: 's3', label: 'Waves', icon: 'ph-waves', src: 'https://cdn.pixabay.com/audio/2022/02/07/audio_0cbfa9b1d0.mp3' }, // Ocean
-  { id: 's4', label: 'Fire', icon: 'ph-fire', src: 'https://cdn.pixabay.com/audio/2021/08/04/audio_c369ddfb5f.mp3' }, // Campfire
+  { id: 's1', label: 'Rain', icon: 'ph-cloud-rain', src: 'https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg' },
+  { id: 's2', label: 'Forest', icon: 'ph-tree', src: 'https://actions.google.com/sounds/v1/animals/bird_forest_ambience.ogg' },
+  { id: 's3', label: 'Waves', icon: 'ph-waves', src: 'https://actions.google.com/sounds/v1/water/ocean_waves_crashing.ogg' },
+  { id: 's4', label: 'Fire', icon: 'ph-fire', src: 'https://actions.google.com/sounds/v1/foley/realistic_fire_crackling.ogg' },
 ];
 
 // --- DOM Elements ---
@@ -204,7 +204,7 @@ function setupNavigation() {
 }
 
 // --- Mood Tracker ---
-const moodEmoji = ["", "ph-confounded", "ph-smiley-sad", "ph-smiley-meh", "ph-smiley", "ph-smiley-wink"];
+const moodEmoji = ["", "ph-smiley-x-eyes", "ph-smiley-sad", "ph-smiley-meh", "ph-smiley", "ph-smiley-wink"];
 
 function setupMoodTracker() {
   // Home Pills
