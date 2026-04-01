@@ -701,8 +701,6 @@ function toggleSound(id, forceStop = false) {
     delete activeSoundMap[id];
   } else {
     audio.volume = volumeControl.value / 100;
-    console.log(audio.play().catch(err => console.log(err)));
-
     audio.play().catch(() => showToast("Audio play blocked."));
     card.classList.add('playing');
     activeSoundMap[id] = true;
@@ -758,6 +756,47 @@ function showEmergencyStep(n) {
   document.querySelectorAll('.estep').forEach(e => e.classList.add('hidden'));
   document.getElementById(`estep${n}`).classList.remove('hidden');
 }
+
+// --- PWA Install Prompt ---
+let deferredInstallPrompt = null;
+const installPopup = document.getElementById('installPopup');
+const installConfirm = document.getElementById('installConfirm');
+const installCancel = document.getElementById('installCancel');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Only show if user hasn't dismissed before
+  if (localStorage.getItem('zenflow_install_dismissed')) return;
+  setTimeout(() => {
+    installPopup.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => installPopup.classList.add('show'));
+    });
+  }, 3000);
+});
+
+installConfirm.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  installPopup.classList.remove('show');
+  setTimeout(() => installPopup.classList.add('hidden'), 400);
+  if (outcome === 'accepted') showToast('ZenFlow installed! 🎉');
+});
+
+installCancel.addEventListener('click', () => {
+  localStorage.setItem('zenflow_install_dismissed', '1');
+  installPopup.classList.remove('show');
+  setTimeout(() => installPopup.classList.add('hidden'), 400);
+});
+
+// Hide popup if already installed
+window.addEventListener('appinstalled', () => {
+  installPopup.classList.remove('show');
+  setTimeout(() => installPopup.classList.add('hidden'), 400);
+});
 
 // Start
 init();

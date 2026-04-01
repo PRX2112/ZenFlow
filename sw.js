@@ -1,11 +1,15 @@
-const CACHE_NAME = 'zenflow-v1';
+const CACHE_NAME = 'zenflow-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/app.js',
   '/icon.svg',
-  '/manifest.json'
+  '/manifest.json',
+  '/sounds/rain.mp3',
+  '/sounds/waves.mp3',
+  '/sounds/forest.mp3',
+  '/sounds/fire.mp3'
 ];
 
 self.addEventListener('install', event => {

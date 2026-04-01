@@ -854,3 +854,72 @@ ul { list-style: none; }
 @media (min-width: 601px) {
   .app { border-left: 1px solid var(--surface-border); border-right: 1px solid var(--surface-border); box-shadow: var(--shadow-lg); }
 }
+
+/* ================== PWA INSTALL POPUP ================== */
+.install-popup {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: calc(100% - 2rem);
+  max-width: 400px;
+  background: var(--surface-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: 0 10px 30px rgba(124, 106, 247, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.install-popup.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.install-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(124, 106, 247, 0.15);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.install-text { flex: 1; min-width: 0; }
+.install-text h4 { font-size: 0.9rem; margin-bottom: 0.15rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.install-text p { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
+.install-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+.btn-primary-sm {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn-primary-sm:active { transform: scale(0.95); }
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-text:hover { color: var(--text-primary); }
+
