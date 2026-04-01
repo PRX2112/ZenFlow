@@ -1,0 +1,18 @@
+{
+  "name": "ZenFlow — Student Stress Relief",
+  "short_name": "ZenFlow",
+  "description": "Student stress relief application with grounding, breathing, and calming activities.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#7c6af7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
