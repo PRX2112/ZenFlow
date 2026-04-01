@@ -33,10 +33,10 @@ const TIPS = [
 const DAILY_CHALLENGE = "Take a 10-minute walk without looking at your phone.";
 
 const SOUNDS = [
-  { id: 's1', label: 'Rain', icon: 'ph-cloud-rain', src: 'https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg' },
-  { id: 's2', label: 'Forest', icon: 'ph-tree', src: 'https://actions.google.com/sounds/v1/animals/bird_forest_ambience.ogg' },
-  { id: 's3', label: 'Waves', icon: 'ph-waves', src: 'https://actions.google.com/sounds/v1/water/ocean_waves_crashing.ogg' },
-  { id: 's4', label: 'Fire', icon: 'ph-fire', src: 'https://actions.google.com/sounds/v1/foley/realistic_fire_crackling.ogg' },
+  { id: 's1', label: 'Rain', icon: 'ph-cloud-rain', src: 'sounds/rain.mp3' },
+  { id: 's2', label: 'Forest', icon: 'ph-tree', src: 'sounds/forest.mp3' },
+  { id: 's3', label: 'Waves', icon: 'ph-waves', src: 'sounds/waves.mp3' },
+  { id: 's4', label: 'Fire', icon: 'ph-fire', src: 'sounds/fire.mp3' },
 ];
 
 // --- DOM Elements ---
@@ -51,13 +51,13 @@ const el = {
   streakCount: document.getElementById('streakCount'),
   toast: document.getElementById('toast'),
   toastMsg: document.getElementById('toastMsg'),
-  
+
   // Navigation
   pages: document.querySelectorAll('.page'),
   navBtns: document.querySelectorAll('.nav-btn'),
   drawerBackdrop: document.getElementById('drawerBackdrop'),
   moreDrawer: document.getElementById('moreDrawer'),
-  
+
   // Mood
   homeMoodRow: document.getElementById('homeMoodRow'),
   moodSelector: document.getElementById('moodSelector'),
@@ -66,13 +66,13 @@ const el = {
   moodBars: document.getElementById('moodBars'),
   avgValue: document.getElementById('avgValue'),
   moodHistory: document.getElementById('moodHistory'),
-  
+
   // Emergency
   emergencyBtn: document.getElementById('emergencyBtn'),
   emergencyModal: document.getElementById('emergencyModal'),
   closeEmergency: document.getElementById('closeEmergency'),
   closeEmergencyFinal: document.getElementById('closeEmergencyFinal'),
-  
+
   // Tips
   tipsFilter: document.getElementById('tipsFilter'),
   tipsGrid: document.getElementById('tipsGrid'),
@@ -86,7 +86,7 @@ function init() {
   updateGreeting();
   updateStreak();
   el.dailyQuote.textContent = `"${QUOTES[Math.floor(Math.random() * QUOTES.length)]}"`;
-  
+
   // Setup Views
   setupNavigation();
   setupMoodTracker();
@@ -97,7 +97,7 @@ function init() {
   setupFocusTimer();
   setupSounds();
   setupEmergency();
-  
+
   // Dismiss Splash
   setTimeout(() => {
     el.splash.style.opacity = '0';
@@ -112,7 +112,7 @@ function init() {
 function loadState() {
   const saved = localStorage.getItem('zenflow_state');
   if (saved) { appState = { ...appState, ...JSON.parse(saved) }; }
-  
+
   if (appState.theme === 'dark') {
     document.body.setAttribute('data-theme', 'dark');
     el.themeToggle.innerHTML = '<i class="ph ph-sun"></i>';
@@ -177,14 +177,14 @@ function navigateTo(pageId) {
   el.pages.forEach(p => p.classList.remove('active'));
   el.navBtns.forEach(btn => btn.classList.remove('active'));
   el.moreDrawer.classList.add('hidden');
-  
+
   // Show target
   const targetPage = document.getElementById(`page-${pageId}`);
   if (targetPage) targetPage.classList.add('active');
-  
+
   const targetNav = document.getElementById(`nav${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`);
   if (targetNav) targetNav.classList.add('active');
-  
+
   window.scrollTo(0, 0);
 }
 
@@ -199,7 +199,7 @@ function setupNavigation() {
       }
     });
   });
-  
+
   el.drawerBackdrop.addEventListener('click', () => el.moreDrawer.classList.add('hidden'));
 }
 
@@ -257,7 +257,7 @@ function renderMoodLog() {
   el.moodHistory.innerHTML = '';
   appState.moods.slice(0, 10).forEach(m => {
     const d = new Date(m.date);
-    const dateStr = d.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'});
+    const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     el.moodHistory.innerHTML += `
       <div class="history-item glass-card">
         <span class="h-date">${dateStr}</span>
@@ -274,11 +274,11 @@ function renderMoodLog() {
   if (last7.length > 0) {
     last7.forEach(m => sum += m.val);
     el.avgValue.textContent = (sum / last7.length).toFixed(1);
-    
+
     // Reverse for chronological chart
     [...last7].reverse().forEach(m => {
       const h = (m.val / 5) * 100;
-      const d = new Date(m.date).toLocaleDateString('en-US', {weekday:'narrow'});
+      const d = new Date(m.date).toLocaleDateString('en-US', { weekday: 'narrow' });
       el.moodBars.innerHTML += `
         <div class="m-bar-col">
           <div class="m-bar-wrap"><div class="m-bar" style="height: ${h}%"></div></div>
@@ -365,17 +365,17 @@ function runBreathCycle(cycleNum) {
 
   breathTimeout = setTimeout(() => {
     if (!isBreathing) return;
-    
+
     if (cfg.hold) { // Hold 1
       bel.label.textContent = 'Hold';
       bel.outer.style.transform = 'scale(1.4)';
       countdown(cfg.hold);
-      
+
       breathTimeout = setTimeout(() => {
         if (!isBreathing) return;
         exhalePh(cfg, cycleNum);
       }, sTime(cfg.hold));
-      
+
     } else {
       exhalePh(cfg, cycleNum);
     }
@@ -391,13 +391,13 @@ function exhalePh(cfg, cycleNum) {
 
   breathTimeout = setTimeout(() => {
     if (!isBreathing) return;
-    
+
     if (cfg.hold2) { // Hold 2 (Box)
       bel.label.textContent = 'Hold';
       countdown(cfg.hold2);
-      breathTimeout = setTimeout(() => runBreathCycle(cycleNum+1), sTime(cfg.hold2));
+      breathTimeout = setTimeout(() => runBreathCycle(cycleNum + 1), sTime(cfg.hold2));
     } else {
-      runBreathCycle(cycleNum+1);
+      runBreathCycle(cycleNum + 1);
     }
   }, sTime(cfg.out));
 }
@@ -415,11 +415,11 @@ function countdown(sec) {
 
 // --- Grounding ---
 const groundCfg = [
-  { s:1, n:5, title:"SEE", icon:"ph-eye", desc:"Name 5 things you can see right now." },
-  { s:2, n:4, title:"FEEL", icon:"ph-hand", desc:"Name 4 things you can physically feel." },
-  { s:3, n:3, title:"HEAR", icon:"ph-ear", desc:"Name 3 things you can hear." },
-  { s:4, n:2, title:"SMELL", icon:"ph-nose", desc:"Name 2 things you can smell." },
-  { s:5, n:1, title:"TASTE", icon:"ph-smiley-blank", desc:"Name 1 good thing about yourself, or 1 thing you can taste." }
+  { s: 1, n: 5, title: "SEE", icon: "ph-eye", desc: "Name 5 things you can see right now." },
+  { s: 2, n: 4, title: "FEEL", icon: "ph-hand", desc: "Name 4 things you can physically feel." },
+  { s: 3, n: 3, title: "HEAR", icon: "ph-ear", desc: "Name 3 things you can hear." },
+  { s: 4, n: 2, title: "SMELL", icon: "ph-nose", desc: "Name 2 things you can smell." },
+  { s: 5, n: 1, title: "TASTE", icon: "ph-smiley-blank", desc: "Name 1 good thing about yourself, or 1 thing you can taste." }
 ];
 let curGStep = 0;
 const gel = {
@@ -439,7 +439,7 @@ function setupGrounding() {
   renderGroundStep();
   gel.next.addEventListener('click', () => { curGStep++; renderGroundStep(); });
   gel.prev.addEventListener('click', () => { curGStep--; renderGroundStep(); });
-  gel.rest.addEventListener('click', () => { curGStep=0; renderGroundStep(); });
+  gel.rest.addEventListener('click', () => { curGStep = 0; renderGroundStep(); });
 }
 
 function renderGroundStep() {
@@ -449,21 +449,21 @@ function renderGroundStep() {
     gel.comp.classList.remove('hidden');
     return;
   }
-  
+
   gel.card.classList.remove('hidden');
   gel.prev.parentElement.classList.remove('hidden');
   gel.comp.classList.add('hidden');
-  
+
   gel.prev.disabled = curGStep === 0;
   gel.next.innerHTML = curGStep === 4 ? '<i class="ph-bold ph-check"></i> Finish' : 'Next <i class="ph-bold ph-arrow-right"></i>';
-  
+
   const step = groundCfg[curGStep];
   gel.icon.innerHTML = `<i class="ph-fill ${step.icon}"></i>`;
   gel.title.textContent = `${step.n} Things You Can ${step.title}`;
   gel.desc.textContent = step.desc;
-  
+
   gel.inputs.innerHTML = '';
-  for(let i=1; i<=step.n; i++) {
+  for (let i = 1; i <= step.n; i++) {
     gel.inputs.innerHTML += `
       <div class="g-input-wrap">
         <span class="g-input-num">${i}.</span>
@@ -471,7 +471,7 @@ function renderGroundStep() {
       </div>
     `;
   }
-  
+
   gel.dots.forEach((d, idx) => {
     d.className = 'ground-step-dot';
     if (idx < curGStep) d.classList.add('done');
@@ -481,8 +481,8 @@ function renderGroundStep() {
 
 // --- Journal ---
 function setupJournal() {
-  document.getElementById('journalDate').textContent = new Date().toLocaleDateString(undefined, {weekday:'long', month:'long', day:'numeric'});
-  
+  document.getElementById('journalDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+
   const prompts = ["What is causing stress today?", "What am I grateful for?", "A letter to my future self", "What do I need right now?"];
   const pRow = document.getElementById('journalPrompts');
   prompts.forEach(p => {
@@ -492,16 +492,16 @@ function setupJournal() {
     b.onclick = () => document.getElementById('journalEditor').value = p + "\n\n";
     pRow.appendChild(b);
   });
-  
+
   const ed = document.getElementById('journalEditor');
   const wc = document.getElementById('wordCount');
   ed.addEventListener('input', () => {
     const w = ed.value.trim().split(/\s+/).filter(x => x.length > 0).length;
-    wc.textContent = `${w} word${w!==1?'s':''}`;
+    wc.textContent = `${w} word${w !== 1 ? 's' : ''}`;
   });
-  
+
   document.getElementById('saveJournal').addEventListener('click', () => {
-    if(!ed.value.trim()) return;
+    if (!ed.value.trim()) return;
     appState.journal.unshift({ date: Date.now(), text: ed.value.trim() });
     saveState();
     ed.value = '';
@@ -509,9 +509,9 @@ function setupJournal() {
     showToast("Journal saved");
     renderJournalHistory();
   });
-  
-  document.getElementById('clearJournal').addEventListener('click', () => { ed.value=''; wc.textContent='0 words'; });
-  
+
+  document.getElementById('clearJournal').addEventListener('click', () => { ed.value = ''; wc.textContent = '0 words'; });
+
   renderJournalHistory();
 }
 
@@ -527,7 +527,7 @@ function renderJournalHistory() {
     list.innerHTML += `
       <div class="history-item glass-card" style="margin-bottom:0.5rem">
         <span class="h-date" style="font-weight:bold;color:var(--primary)">${d}</span>
-        <span class="h-note">${j.text.substring(0, 100)}${j.text.length>100?'...':''}</span>
+        <span class="h-note">${j.text.substring(0, 100)}${j.text.length > 100 ? '...' : ''}</span>
       </div>
     `;
   });
@@ -542,7 +542,7 @@ function setupTips() {
     el.completeChallengeBtn.disabled = true;
     showToast("Great job completing the challenge!");
   });
-  
+
   el.tipsFilter.addEventListener('click', (e) => {
     if (!e.target.classList.contains('filter-chip')) return;
     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -570,9 +570,9 @@ function renderTips(cat) {
 
 // --- Focus Timer ---
 let tInt, tTime = 1500, tMode = 'pomodoro', isTRunning = false;
-const tmEl = { 
-  d: document.getElementById('timerDisplay'), 
-  r: document.getElementById('timerRing'), 
+const tmEl = {
+  d: document.getElementById('timerDisplay'),
+  r: document.getElementById('timerRing'),
   btn: document.getElementById('timerStart'),
   txt: document.getElementById('timerStartText'),
   ico: document.getElementById('timerStartIcon')
@@ -582,46 +582,46 @@ function setupFocusTimer() {
   document.getElementById('timerReset').onclick = () => resetTimer();
   document.getElementById('timerSkip').onclick = () => skipTimer();
   tmEl.btn.onclick = () => { isTRunning ? pauseTimer() : tStart(); };
-  
+
   // Tasks
   const iBtn = document.getElementById('addTaskBtn');
   const inp = document.getElementById('taskInput');
   iBtn.onclick = () => {
-    if(!inp.value) return;
+    if (!inp.value) return;
     document.getElementById('taskList').innerHTML += `
       <li class="ftask">
         <span onclick="this.parentElement.classList.toggle('done')">• ${inp.value}</span>
         <button class="ftask-del" onclick="this.parentElement.remove()"><i class="ph ph-trash"></i></button>
       </li>
     `;
-    inp.value='';
+    inp.value = '';
   };
 }
 
-window.setTimerMode = function(m) {
-  document.querySelectorAll('.timer-mode-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(m==='pomodoro'?'pomodoroTab':m==='short'?'shortBreakTab':'longBreakTab').classList.add('active');
+window.setTimerMode = function (m) {
+  document.querySelectorAll('.timer-mode-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(m === 'pomodoro' ? 'pomodoroTab' : m === 'short' ? 'shortBreakTab' : 'longBreakTab').classList.add('active');
   tMode = m;
-  document.getElementById('timerModeLabel').textContent = m==='pomodoro'?'Focus':m==='short'?'Short Break':'Long Break';
+  document.getElementById('timerModeLabel').textContent = m === 'pomodoro' ? 'Focus' : m === 'short' ? 'Short Break' : 'Long Break';
   resetTimer();
 }
 
 function rTime() {
-  const m = Math.floor(tTime/60).toString().padStart(2,'0');
-  const s = (tTime%60).toString().padStart(2,'0');
+  const m = Math.floor(tTime / 60).toString().padStart(2, '0');
+  const s = (tTime % 60).toString().padStart(2, '0');
   tmEl.d.textContent = `${m}:${s}`;
-  const max = tMode==='pomodoro'?1500:tMode==='short'?300:900;
+  const max = tMode === 'pomodoro' ? 1500 : tMode === 'short' ? 300 : 900;
   const pct = tTime / max;
   tmEl.r.style.strokeDasharray = `${pct * 603} 603`; // r=96
 }
 
 function tStart() {
-  isTRunning = true; 
+  isTRunning = true;
   tmEl.txt.textContent = 'Pause';
   tmEl.ico.className = 'ph-fill ph-pause';
   tInt = setInterval(() => {
     tTime--; rTime();
-    if(tTime <= 0) {
+    if (tTime <= 0) {
       clearInterval(tInt);
       isTRunning = false;
       showToast("Time's up!");
@@ -632,24 +632,24 @@ function tStart() {
   }, 1000);
 }
 
-function pauseTimer() { 
-  isTRunning = false; 
-  tmEl.txt.textContent = 'Start'; 
+function pauseTimer() {
+  isTRunning = false;
+  tmEl.txt.textContent = 'Start';
   tmEl.ico.className = 'ph-fill ph-play';
-  clearInterval(tInt); 
+  clearInterval(tInt);
 }
 
-function resetTimer() { 
-  isTRunning = false; 
-  tmEl.txt.textContent = 'Start'; 
+function resetTimer() {
+  isTRunning = false;
+  tmEl.txt.textContent = 'Start';
   tmEl.ico.className = 'ph-fill ph-play';
-  clearInterval(tInt); 
-  tTime = tMode==='pomodoro'?1500:tMode==='short'?300:900; 
-  rTime(); 
+  clearInterval(tInt);
+  tTime = tMode === 'pomodoro' ? 1500 : tMode === 'short' ? 300 : 900;
+  rTime();
 }
 
-function skipTimer() { 
-  tTime=0; rTime(); pauseTimer(); 
+function skipTimer() {
+  tTime = 0; rTime(); pauseTimer();
 }
 
 // --- Sounds ---
@@ -659,7 +659,7 @@ const volumeControl = document.getElementById('masterVolume');
 function setupSounds() {
   const grid = document.getElementById('soundsGrid');
   grid.innerHTML = '';
-  
+
   SOUNDS.forEach(s => {
     const card = document.createElement('div');
     card.className = 'sound-card';
@@ -671,7 +671,7 @@ function setupSounds() {
       <span class="s-label">${s.label}</span>
       <audio id="snd_audio_${s.id}" src="${s.src}" loop></audio>
     `;
-    
+
     card.addEventListener('click', () => toggleSound(s.id));
     grid.appendChild(card);
   });
@@ -680,7 +680,7 @@ function setupSounds() {
     const vol = e.target.value / 100;
     Object.keys(activeSoundMap).forEach(id => {
       const audio = document.getElementById(`snd_audio_${id}`);
-      if(audio) audio.volume = vol;
+      if (audio) audio.volume = vol;
     });
   });
 
@@ -693,14 +693,16 @@ function setupSounds() {
 function toggleSound(id, forceStop = false) {
   const audio = document.getElementById(`snd_audio_${id}`);
   const card = document.getElementById(`snd_card_${id}`);
-  if(!audio || !card) return;
+  if (!audio || !card) return;
 
-  if(activeSoundMap[id] || forceStop) {
+  if (activeSoundMap[id] || forceStop) {
     audio.pause();
     card.classList.remove('playing');
     delete activeSoundMap[id];
   } else {
     audio.volume = volumeControl.value / 100;
+    console.log(audio.play().catch(err => console.log(err)));
+
     audio.play().catch(() => showToast("Audio play blocked."));
     card.classList.add('playing');
     activeSoundMap[id] = true;
@@ -712,21 +714,21 @@ function setupEmergency() {
   el.emergencyBtn.addEventListener('click', () => { el.emergencyModal.classList.remove('hidden'); showEmergencyStep(1); });
   el.closeEmergency.addEventListener('click', () => el.emergencyModal.classList.add('hidden'));
   el.closeEmergencyFinal.addEventListener('click', () => el.emergencyModal.classList.add('hidden'));
-  
+
   // Step 4 hold logic
   const pBtn = document.getElementById('pressBtn');
   const pProg = document.getElementById('pressProgress');
   const pDone = document.getElementById('pressDone');
-  let pTim, pw=0;
-  
+  let pTim, pw = 0;
+
   pBtn.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     pBtn.textContent = 'Holding...';
     pTim = setInterval(() => {
       pw += 2; // 50 increments = 5 seconds
       pProg.style.opacity = '1';
-      pProg.style.transform = `rotate(${pw*3.6 - 45}deg)`;
-      if(pw >= 100) {
+      pProg.style.transform = `rotate(${pw * 3.6 - 45}deg)`;
+      if (pw >= 100) {
         clearInterval(pTim);
         pBtn.textContent = 'Done!';
         pBtn.style.background = 'var(--success)';
@@ -735,19 +737,19 @@ function setupEmergency() {
       }
     }, 100);
   });
-  
+
   const endHold = () => {
     clearInterval(pTim);
-    if(pw < 100) { pBtn.textContent='Hold Me'; pw=0; pProg.style.opacity='0'; }
+    if (pw < 100) { pBtn.textContent = 'Hold Me'; pw = 0; pProg.style.opacity = '0'; }
   };
   pBtn.addEventListener('pointerup', endHold);
   pBtn.addEventListener('pointerleave', endHold);
 }
 
-window.nextEmergencyStep = function(n) {
-  if(n === 5) {
+window.nextEmergencyStep = function (n) {
+  if (n === 5) {
     const aff = ["I am safe right now.", "This feeling will pass.", "I am capable of handling this.", "My breath anchors me."];
-    document.getElementById('affirmationBox').textContent = `"${aff[Math.floor(Math.random()*aff.length)]}"`;
+    document.getElementById('affirmationBox').textContent = `"${aff[Math.floor(Math.random() * aff.length)]}"`;
   }
   showEmergencyStep(n);
 };
